@@ -5,5 +5,5 @@ CREATE TABLE TBL_USERS (
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   email VARCHAR(100) DEFAULT NULL,
-  date_of_birth DATE DEFAULT NULL
+  dlNumber VARCHAR(12) NOT NULL
 );

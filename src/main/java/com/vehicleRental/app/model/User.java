@@ -20,13 +20,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class User implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+public class User extends BaseModel implements Serializable{
 
 	@Column(name = "first_name")
 	private String firstName;
@@ -37,6 +31,6 @@ public class User implements Serializable {
 	@Column(name = "email")
 	private String email;
 
-	@Column(name = "DLNumber")
-	private LocalDate dlNumber;
+	@Column(name = "dlNumber")
+	private String dlNumber;
 }
