@@ -10,8 +10,16 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Enum" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -32,11 +40,19 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/vehicleRental/app/service" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\gitP\SimpleSpring\Spring-Boot-RestTemplate\vehicle-Rental\src\main\java\com\vehicleRental\app\service" />
+      <recent name="C:\gitP\SimpleSpring\Spring-Boot-RestTemplate\vehicle-Rental\src\main\java\com\vehicleRental\app\payloads" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.vehicleRental.app.controller" />
-      <recent name="com.vehicleRental.app.config" />
+      <recent name="com.vehicleRental.app.repositories" />
+      <recent name="com.vehicleRental.app.service.impl" />
+      <recent name="com.vehicleRental.app.service" />
+      <recent name="com.vehicleRental.app.entities" />
+      <recent name="com.vehicleRental.app.payloads" />
     </key>
   </component>
   <component name="RunManager">
@@ -69,5 +85,16 @@
       <updated>1658613025882</updated>
     </task>
     <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/vehicleRental/app/controller/UserController.java</url>
+          <line>56</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -1,34 +1,21 @@
 package com.vehicleRental.app.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.vehicleRental.app.entities.User;
+import com.vehicleRental.app.payloads.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import springfox.documentation.swagger2.mappers.ModelMapper;
 
-import com.vehicleRental.app.dao.UserDao;
-import com.vehicleRental.app.model.User;
+import java.util.List;
 
-@Service
-public class UserService {
+public interface UserService {
 
-	@Autowired
-	UserDao userDao;
+	UserDto createUser(UserDto user);
 
-	public List<User> getAll() {
-		return userDao.findAll();
-	}
+	UserDto updateUser(UserDto user, Long userId);
 
-	public Optional<User> getById(long id) {
-		return userDao.findById(id);
-	}
+	UserDto getUserById(Long userId);
 
-	public User save(User newUser) {
-		return userDao.save(newUser);
-	}
+	List<UserDto> getAllUsers();
 
-	public void delete(long id) {
-		userDao.deleteById(id);
-	}
-
+	void deleteUser(Long userId);
 }

@@ -3,77 +3,55 @@ package com.vehicleRental.app.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.vehicleRental.app.payloads.ApiResponse;
+import com.vehicleRental.app.payloads.UserDto;
+import com.vehicleRental.app.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
-import com.vehicleRental.app.exception.RecordNotFoundException;
-import com.vehicleRental.app.exception.ServerException;
-import com.vehicleRental.app.model.User;
-import com.vehicleRental.app.service.UserService;
+import javax.validation.Valid;
 
+@Slf4j
 @RestController
+@RequestMapping("/v1/users")
 public class UserController {
-
 	@Autowired
-	UserService userService;
+	private UserService userService;
 
-	@GetMapping("users")
-	public ResponseEntity<List<User>> getAll() {
-		return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+	// create user
+	@PostMapping("/")
+	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
+		UserDto createUserDto = this.userService.createUser(userDto);
+		return new ResponseEntity<>(createUserDto, HttpStatus.CREATED);
 	}
 
-	@GetMapping("users/{id}")
-	public ResponseEntity<User> getById(@PathVariable final long id) {
-		Optional<User> user = userService.getById(id);
-		if (user.isPresent()) {
-			return new ResponseEntity<>(user.get(), HttpStatus.OK);
-		}
-		else {
-			throw new RecordNotFoundException();
-		}
+	// update user
+	@PutMapping("/{userId}")
+	public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable("userId") Long uid) {
+		UserDto updatedUser = this.userService.updateUser(userDto, uid);
+		return ResponseEntity.ok(updatedUser);
 	}
 
-	@PostMapping(path = "users",
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> create(@RequestBody final User newUser) {
-		User user = userService.save(newUser);
-		if (user == null) {
-			throw new ServerException();
-		}
-		else {
-			return new ResponseEntity<>(user, HttpStatus.CREATED);
-		}
+	// get all users
+	@GetMapping("/")
+	public ResponseEntity<List<UserDto>> getAllUsers() {
+		return ResponseEntity.ok(this.userService.getAllUsers());
 	}
 
-	@PutMapping("users/{id}")
-	public ResponseEntity<User> update(@RequestBody final User updatedUser) {
-		User user = userService.save(updatedUser);
-		if (user == null) {
-			throw new ServerException();
-		}
-		else {
-			return new ResponseEntity<>(user, HttpStatus.OK);
-		}
+	// get a user
+	@GetMapping("/{userId}")
+	public ResponseEntity<UserDto> getSingleUser(@PathVariable Long userId) {
+		return ResponseEntity.ok(this.userService.getUserById(userId));
 	}
 
-	@DeleteMapping("users/{id}")
-	public HttpStatus delete(@PathVariable final long id) {
-		try {
-			userService.delete(id);
-			return HttpStatus.OK;
-		}
-		catch (Exception e) {
-			throw new RecordNotFoundException();
-		}
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<ApiResponse> deleteUser(@PathVariable("userId") Long uid) {
+		this.userService.deleteUser(uid);
+		return new ResponseEntity<ApiResponse>(new ApiResponse("User deleted Successfully", true), HttpStatus.OK);
 	}
 }

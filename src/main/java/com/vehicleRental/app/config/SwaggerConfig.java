@@ -21,22 +21,23 @@ import java.util.Collections;
 public class SwaggerConfig {                                    
     @Bean
     public Docket api() { 
-        return new Docket(DocumentationType.SWAGGER_2)  
-          .select()                                  
-          .apis(RequestHandlerSelectors.basePackage("com.vehicleRental.app.controller"))
-          .paths(PathSelectors.any())                          
-          .build()
-          .apiInfo(apiInfo());
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("rental-api-1.0")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.vehicleRental.app.controller"))
+                .paths(PathSelectors.any())
+                .build()
+                .apiInfo(apiInfo());
     }
     
     private ApiInfo apiInfo() {
-        return new ApiInfo(
-          "Vehicle Rental Service API",
-          "REST API which provide a simple vehicle rental service.", 
-          "1.0",
-          "Terms of service", 
-          new Contact("vehiclerental", "www.werent.com", "cs@werent.com"),
-          "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0", Collections.emptyList());
+                return new ApiInfo(
+                  "Vehicle Rental Service API",
+                  "REST API which provide a simple vehicle rental service.",
+                  "1.0",
+                  "Terms of service",
+                  new Contact("vehiclerental", "www.werent.com", "cs@werent.com"),
+                  "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0", Collections.emptyList());
     }
     
 }
