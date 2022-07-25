@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @Setter
@@ -18,6 +19,9 @@ public class VehicleDto extends BaseEntity {
 	@NotEmpty( message = "Registration number should be greater than empty")
 	private String registrationNumber;
 
-	private String vehicleStatus;
+	@NotNull
+	private VehicleStatus vehicleStatus;
+
+	private CentreDto centre;
 
 }

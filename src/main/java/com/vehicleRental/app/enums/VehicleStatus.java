@@ -1,18 +1,11 @@
 package com.vehicleRental.app.enums;
 
 public enum VehicleStatus {
-    AVAILABLE("available"),
-    BOOKED("booked"),
-    NOTSERVICABLE("not_servicable"),
-    DEFAULT("default");
+    AVAILABLE,
+    BOOKED,
+    NOTSERVICABLE,
+    DEFAULT;
 
-    private final String name;
-
-    private VehicleStatus(String name) {
-        this.name = name;
-    }
-
-    public String getValue() {
-        return this.name;
-    }
+    private static VehicleStatus[] allValues = values();
+    public static VehicleStatus fromOrdinal(int n) {return allValues[n];}
 }

@@ -2,6 +2,7 @@ package com.vehicleRental.app.controller;
 
 import com.vehicleRental.app.payloads.ApiResponse;
 import com.vehicleRental.app.payloads.CentreDto;
+import com.vehicleRental.app.payloads.VehicleDto;
 import com.vehicleRental.app.service.CentreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,16 @@ public class CentreController {
         return ResponseEntity.ok(this.centreService.getCentreById(centreId));
     }
 
+    // get multiple centre
+    @GetMapping("/centresByIDs/")
+    public ResponseEntity<List<CentreDto>> getMultipleCentre(@RequestParam List<Long> centreIds) {
+        return ResponseEntity.ok(this.centreService.findByIdIn(centreIds));
+    }
+
     @DeleteMapping("/{centreId}")
     public ResponseEntity<ApiResponse> deleteCentre(@PathVariable("centreId") Long uid) {
         this.centreService.deleteCentre(uid);
         return new ResponseEntity<ApiResponse>(new ApiResponse("Centre deleted Successfully", true), HttpStatus.OK);
     }
+
 }

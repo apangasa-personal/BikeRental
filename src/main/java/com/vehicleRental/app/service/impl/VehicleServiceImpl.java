@@ -1,8 +1,12 @@
 package com.vehicleRental.app.service.impl;
 
+import com.vehicleRental.app.entities.Centre;
 import com.vehicleRental.app.entities.Vehicle;
+import com.vehicleRental.app.enums.VehicleStatus;
 import com.vehicleRental.app.exception.ResourceNotFoundException;
+import com.vehicleRental.app.payloads.CentreDto;
 import com.vehicleRental.app.payloads.VehicleDto;
+import com.vehicleRental.app.repositories.CentreRepo;
 import com.vehicleRental.app.repositories.VehicleRepo;
 import com.vehicleRental.app.service.VehicleService;
 import org.modelmapper.ModelMapper;
@@ -20,9 +24,18 @@ public class VehicleServiceImpl implements VehicleService {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@Autowired
+	private CentreRepo centreRepo;
+
+	@Autowired
+	private CentreServiceImpl centreService;
+
 	@Override
-	public VehicleDto createVehicle(VehicleDto vehicleDto) {
+	public VehicleDto createVehicle(VehicleDto vehicleDto, Long centreId) {
+		Centre centre = this.centreRepo.findById(centreId)
+				.orElseThrow(() -> new ResourceNotFoundException("Centre ", "Centre id", centreId));
 		Vehicle vehicle = this.dtoToVehicle(vehicleDto);
+		vehicle.setCentre(centre);
 		Vehicle savedVehicle = this.vehicleRepo.save(vehicle);
 		return this.vehicleToDto(savedVehicle);
 	}
@@ -75,5 +88,53 @@ public class VehicleServiceImpl implements VehicleService {
 	public VehicleDto vehicleToDto(Vehicle vehicle) {
 		VehicleDto vehicleDto = this.modelMapper.map(vehicle, VehicleDto.class);
 		return vehicleDto;
+	}
+
+	@Override
+	public List<VehicleDto> getVehiclesByCentre(Long centreId) {
+
+		Centre centre = this.centreRepo.findById(centreId)
+				.orElseThrow(() -> new ResourceNotFoundException("Centre ", "centreId ", centreId));
+		List<Vehicle> vehicles = this.vehicleRepo.findByCentre(centre);
+
+		List<VehicleDto> vehicleDtos = vehicles.stream().map((vehicle) -> this.modelMapper.map(vehicle, VehicleDto.class))
+				.collect(Collectors.toList());
+
+		return vehicleDtos;
+	}
+
+	@Override
+	public List<VehicleDto> getVehiclesByCentreAndStatus(Long centreId, Integer vehicleStatus) {
+
+		Centre centre = this.centreRepo.findById(centreId)
+				.orElseThrow(() -> new ResourceNotFoundException("Centre ", "centreId ", centreId));
+		List<Vehicle> vehicles = this.vehicleRepo.findByCentreAndVehicleStatus(centre, VehicleStatus.fromOrdinal(vehicleStatus));
+
+		List<VehicleDto> vehicleDtos = vehicles.stream().map((vehicle) -> this.modelMapper.map(vehicle, VehicleDto.class))
+				.collect(Collectors.toList());
+
+		return vehicleDtos;
+	}
+
+	@Override
+	public List<VehicleDto> getVehiclesByStatusAndCentreIn(Integer vehicleStatus, List<Long> centresIds) {
+		List<Centre> centres = this.centreRepo.findAllById(centresIds);
+		List<Vehicle> vehicles = this.vehicleRepo.findByVehicleStatusAndCentreIn(VehicleStatus.fromOrdinal(vehicleStatus), centres);
+
+		List<VehicleDto> vehicleDtos = vehicles.stream().map((vehicle) -> this.modelMapper.map(vehicle, VehicleDto.class))
+				.collect(Collectors.toList());
+
+		return vehicleDtos;
+	}
+
+	@Override
+	public List<VehicleDto> getVehiclesWithinRadius(Double longitude, Double latitude,Integer range, Integer vehicleStatus) {
+		List<Centre> centres = centreService.getCentreWithinRadius(latitude, longitude, range);
+		List<Vehicle> vehicles = this.vehicleRepo.findByVehicleStatusAndCentreIn(VehicleStatus.fromOrdinal(vehicleStatus), centres);
+
+		List<VehicleDto> vehicleDtos = vehicles.stream().map((vehicle) -> this.modelMapper.map(vehicle, VehicleDto.class))
+				.collect(Collectors.toList());
+
+		return vehicleDtos;
 	}
 }
